@@ -17,8 +17,7 @@ CFLAGS = -fPIC -std=c99 -O3 $(OPTIFLAG) -Wall -Wextra -Wshadow -Wno-implicit-fun
 LIBS=build/lib/libmylib.a build/lib/libprobdist.a build/lib/libtestu01.a
 LIBSCMD= build/lib/libtestu01.a  build/lib/libprobdist.a build/lib/libmylib.a  -lm
 LIBTARGET=build/lib/libmylib.a
-EXECUTABLES=testaesdragontamer testmersennetwister testlehmer64 testsplitmix64 testxoroshiro128plus testv8xorshift128plus testxorshift128plus testxorshift32 testpcg32 testpcg64 testaesctr testxorshift1024star testxorshift1024plus testwyhash testwyrand
-
+EXECUTABLES=testLizardPwlcm 
 HEADERS=include/main.h
 
 
@@ -33,53 +32,15 @@ TestU01-1.2.3: TestU01.zip
 $(LIBTARGET): TestU01-1.2.3
 	(cd TestU01-1.2.3 && ./configure --prefix="$$(dirname "$$(pwd)")/build" && make -j 6 && make -j 6 install)
 
-testmersennetwister:  $(LIBTARGET) $(HEADERS)
-	$(CC) $(CFLAGS) -o testmersennetwister src/testmersennetwister.c $(LIBSCMD) -I../source -Ibuild/include/ -Iinclude
+testLizardPwlcm: $(LIBTARGET) $(HEADERS) toolex.o lizard.o pwlcm.o
+	$(CC) $(CFLAGS) -o testLizardPwlcm src/testLizardPwlcm.c toolex.o lizard.o pwlcm.o $(LIBSCMD) -I../source -Ibuild/include/ -Iinclude -Isrc/lizardpwlcm
 
-testlehmer64:  $(LIBTARGET) $(HEADERS)
-	$(CC) $(CFLAGS) -o testlehmer64 src/testlehmer64.c $(LIBSCMD) -I../source -Ibuild/include/ -Iinclude
-
-testaesctr:  $(LIBTARGET) $(HEADERS)
-	$(CC) $(CFLAGS) -o testaesctr src/testaesctr.c $(LIBSCMD) -I../source -Ibuild/include/ -Iinclude
-
-testaesdragontamer:  $(LIBTARGET) $(HEADERS)
-	$(CC) $(CFLAGS) -o testaesdragontamer src/testaesdragontamer.c $(LIBSCMD) -I../source -Ibuild/include/ -Iinclude
-
-testsplitmix64 :  $(LIBTARGET) $(HEADERS)
-	$(CC) $(CFLAGS) -o testsplitmix64 src/testsplitmix64.c $(LIBSCMD) -I../source -Ibuild/include/ -Iinclude
-
-testxoroshiro128plus: $(LIBTARGET) $(HEADERS)
-	$(CC) $(CFLAGS) -o testxoroshiro128plus src/testxoroshiro128plus.c $(LIBSCMD) -I../source -Ibuild/include/ -Iinclude
-
-testxorshift1024star:  $(LIBTARGET) $(HEADERS)
-	$(CC) $(CFLAGS) -o testxorshift1024star src/testxorshift1024star.c $(LIBSCMD) -I../source -Ibuild/include/ -Iinclude
-
-testxorshift1024plus:  $(LIBTARGET) $(HEADERS)
-	$(CC) $(CFLAGS) -o testxorshift1024plus src/testxorshift1024plus.c $(LIBSCMD) -I../source -Ibuild/include/ -Iinclude
-
-testxorshift128plus: $(LIBTARGET) $(HEADERS)
-	$(CC) $(CFLAGS) -o testxorshift128plus src/testxorshift128plus.c $(LIBSCMD) -I../source -Ibuild/include/ -Iinclude
-
-testwyhash: $(LIBTARGET) $(HEADERS)
-	$(CC) $(CFLAGS) -o testwyhash src/testwyhash.c $(LIBSCMD) -I../source -Ibuild/include/ -Iinclude
-
-testwyrand: $(LIBTARGET) $(HEADERS)
-	$(CC) $(CFLAGS) -o testwyrand src/testwyrand.c $(LIBSCMD) -I../source -Ibuild/include/ -Iinclude
-
-
-testv8xorshift128plus: $(LIBTARGET) $(HEADERS)
-	$(CC) $(CFLAGS) -o testv8xorshift128plus src/testv8xorshift128plus.c $(LIBSCMD) -I../source -Ibuild/include/ -Iinclude
-
-testxorshift32: $(LIBTARGET) $(HEADERS)
-	$(CC) $(CFLAGS) -o testxorshift32 src/testxorshift32.c $(LIBSCMD) -I../source -Ibuild/include/ -Iinclude
-
-testpcg32: $(LIBTARGET) $(HEADERS)
-	$(CC) $(CFLAGS) -o testpcg32 src/testpcg32.c $(LIBSCMD) -I../source -Ibuild/include/ -Iinclude
-
-testpcg64: $(LIBTARGET) $(HEADERS)
-	$(CC) $(CFLAGS) -o testpcg64 src/testpcg64.c $(LIBSCMD) -I../source -Ibuild/include/ -Iinclude
-
-
+toolex.o: src/lizardpwlcm/toolex.c
+	$(CC) -g -c src/lizardpwlcm/toolex.c -o toolex.o
+lizard.o: src/lizardpwlcm/lizard.c
+	$(CC) -g -c src/lizardpwlcm/lizard.c -o lizard.o
+pwlcm.o: src/lizardpwlcm/pwlcm.c
+	$(CC) -g -c src/lizardpwlcm/pwlcm.c -o pwlcm.o 
 
 clean:
 	rm -f $(EXECUTABLES)
