@@ -1,15 +1,14 @@
 Assuming Linux or macOS. Go to a bash shell and type:
 
-```
-./bigcrushall.sh
-```
-This runs for a very long time. Testing a single 
-RNG might take about 2 hours.
- The ``runtests.sh`` scripts executes small crush, and crush,
-but these batteries of tests are included in big crush itself.
+	make
 
-A fast test inspired by O'Neill's:
+For testing LIZARD-PWLCM just simply  follows:
+1) For Small Crush
+	./testLizardPwlcm 
+2) For Crush
+	./testLizardPwlcm -c
+3) For Big Crush
+	./testLizardPwlcm -b
 
-```
-./linearcomplexity.sh
-```
+If the nohub and unbuffer are available on your PC, you could:
+	nohub unbuffer ./testLizardPwlcm -b 2>&1 | tee testLizardPwlcm-BigCrush.log
