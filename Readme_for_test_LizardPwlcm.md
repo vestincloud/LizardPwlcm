@@ -1,4 +1,4 @@
-This project is mainly used to test the randonmess of LizardPwlcm with TestU01 under testingRNG project, which is released by Daniel Lemire(2018), URL https://github.com/lemire/testingRNG. 
+This project is mainly used to test the randonmess of LIZARD-PWLCM with TestU01 under testingRNG project, which is released by Daniel Lemire(2018) at https://github.com/lemire/testingRNG. 
 
 
 In the directory of testu01, the program could be simply compiled as:
